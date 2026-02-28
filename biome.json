@@ -1,0 +1,66 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "ignoreUnknown": true,
+        "includes": ["**", "!node_modules", "!dist", "!test/helpers/payload.test.types.ts"]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 120
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "suspicious": {
+                "noTsIgnore": "error",
+                "noExplicitAny": "off",
+                "noImplicitAnyLet": "off",
+                "noArrayIndexKey": "off",
+                "noConfusingVoidType": "off"
+            },
+            "correctness": {
+                "noUnusedImports": "error",
+                "noUnusedVariables": "error",
+                "noUnusedFunctionParameters": "error"
+            },
+            "complexity": {
+                "useArrowFunction": "error"
+            },
+            "style": {
+                "useDefaultParameterLast": "error",
+                "noParameterAssign": "error",
+                "noRestrictedImports": "error",
+                "useNodejsImportProtocol": "error"
+            }
+        },
+        "domains": {
+            "next": "recommended",
+            "react": "recommended"
+        }
+    },
+    "assist": {
+        "actions": {
+            "source": {
+                "recommended": true,
+                "organizeImports": "on"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single",
+            "jsxQuoteStyle": "single",
+            "arrowParentheses": "asNeeded",
+            "bracketSameLine": false,
+            "bracketSpacing": false
+        }
+    }
+}

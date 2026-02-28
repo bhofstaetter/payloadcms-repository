@@ -1,0 +1,31 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+/.idea/*
+/.vscode/*
+
+# production
+/dist
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+*.log*
+
+# env files
+.env
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr

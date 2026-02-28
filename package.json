@@ -1,0 +1,54 @@
+{
+    "name": "@bhofstaetter/payloadcms-repository",
+    "version": "1.0.0",
+    "description": "Opinionated repository and query object wrapper around Payload's local API.",
+    "license": "MIT",
+    "author": "Benedikt Hofstätter",
+    "homepage": "https://github.com/bhofstaetter/payloadcms-repository",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bhofstaetter/payloadcms-repository.git"
+    },
+    "keywords": [
+        "payload",
+        "payloadcms",
+        "repository",
+        "repository-pattern",
+        "query-object",
+        "local api",
+        "data fetching"
+    ],
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json",
+        "typecheck": "tsc",
+        "lint": "biome check",
+        "lint:fix": "biome check --fix"
+    },
+    "peerDependencies": {
+        "payload": ">=3",
+        "ts-essentials": ">=10"
+    },
+    "devDependencies": {
+        "payload": "^3.78.0",
+        "@payloadcms/db-postgres": "^3.78.0",
+        "ts-essentials": "^10.0.0",
+        "typescript": "^5",
+        "@biomejs/biome": "2.4.4",
+        "@testcontainers/postgresql": "^11.11.0",
+        "vite-tsconfig-paths": "^6.1.1",
+        "vitest": "^4.0.18"
+    },
+    "engines": {
+        "node": ">=22.0.0"
+    }
+}
