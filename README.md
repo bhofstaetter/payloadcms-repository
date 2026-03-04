@@ -1,6 +1,6 @@
 # payload-repository
 
-Opinionated repository and query object wrapper around Payload's local API.
+Opinionated repository and query object wrapper around Payload's Local API.
 
 ## Installation
 
@@ -96,4 +96,3 @@ MIT
 ## Todo
 
 - [ ] Github Actions
-- [ ] Publish to NPM

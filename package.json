@@ -1,6 +1,6 @@
 {
     "name": "@bhofstaetter/payloadcms-repository",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Opinionated repository and query object wrapper around Payload's local API.",
     "license": "MIT",
     "author": "Benedikt Hofstätter",
@@ -32,7 +32,8 @@
         "build": "tsc -p tsconfig.build.json",
         "typecheck": "tsc",
         "lint": "biome check",
-        "lint:fix": "biome check --fix"
+        "lint:fix": "biome check --fix",
+        "prepublishOnly": "npm run lint && npm run typecheck && npm run build"
     },
     "peerDependencies": {
         "payload": ">=3",
