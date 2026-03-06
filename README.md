@@ -1,6 +1,6 @@
 # payload-repository
 
-Opinionated repository and query object wrapper around Payload's Local API.
+Opinionated repository and operations object wrapper around Payload's Local API.
 
 ## Installation
 
@@ -12,16 +12,16 @@ npm install @bhofstaetter/payloadcms-repository
 
 Pass your generated Payload `Config` type as the first type argument to get full type safety on fields, select, and return types.
 
-### CollectionQuery
+### CollectionOperations
 
-Extend `CollectionQuery` to encapsulate domain-specific query logic for a collection:
+Extend `CollectionOperations` to encapsulate domain-specific operations logic for a collection:
 
 ```ts
 import type {BasePayload} from 'payload';
 import type {Config} from '@/payload-types';
-import {CollectionQuery} from '@bhofstaetter/payloadcms-repository';
+import {CollectionOperations} from '@bhofstaetter/payloadcms-repository';
 
-class PostsQuery extends CollectionQuery<Config, 'posts'> {
+class PostsOperations extends CollectionOperations<Config, 'posts'> {
     constructor(payload: BasePayload) {
         super(payload, 'posts');
     }
@@ -52,23 +52,23 @@ class PostsQuery extends CollectionQuery<Config, 'posts'> {
 }
 
 // Usage
-const postsQuery = new PostsQuery(payload);
+const postsOperations = new PostsOperations(payload);
 
-const post = await postsQuery.create('Hello World');
-const published = await postsQuery.findPublished();
-await postsQuery.publish(post.id);
+const post = await postsOperations.create('Hello World');
+const published = await postsOperations.findPublished();
+await postsOperations.publish(post.id);
 ```
 
-### GlobalQuery
+### GlobalOperations
 
-Extend `GlobalQuery` to encapsulate domain-specific query logic for a global:
+Extend `GlobalOperations` to encapsulate domain-specific operations logic for a global:
 
 ```ts
 import type {BasePayload} from 'payload';
 import type {Config} from '@/payload-types';
-import {GlobalQuery} from '@bhofstaetter/payloadcms-repository';
+import {GlobalOperations} from '@bhofstaetter/payloadcms-repository';
 
-class SettingsQuery extends GlobalQuery<Config, 'settings'> {
+class SettingsOperations extends GlobalOperations<Config, 'settings'> {
     constructor(payload: BasePayload) {
         super(payload, 'settings');
     }
@@ -83,10 +83,10 @@ class SettingsQuery extends GlobalQuery<Config, 'settings'> {
 }
 
 // Usage
-const settingsQuery = new SettingsQuery(payload);
+const settingsOperations = new SettingsOperations(payload);
 
-const settings = await settingsQuery.get();
-await settingsQuery.setSiteTitle('My Site');
+const settings = await settingsOperations.get();
+await settingsOperations.setSiteTitle('My Site');
 ```
 
 ## License

@@ -1,20 +1,24 @@
+import {getTestContext} from '@test/helpers/getTestContext';
 import type {Config} from '@test/helpers/payload.test.types';
-import {setupIntegrationTestPayloadInstanceFor} from '@test/helpers/setupIntegrationTestPayloadInstanceFor';
 import type {BasePayload} from 'payload';
 import {expect, it} from 'vitest';
-import {CollectionQuery} from '@/collection/CollectionQuery';
+import {CollectionOperations} from '@/collection/CollectionOperations';
 
-const ctx = setupIntegrationTestPayloadInstanceFor(['dummies']);
+const ctx = getTestContext();
 
-class DummyQuery extends CollectionQuery<Config, 'dummies'> {
+class CollectionDuplicate extends CollectionOperations<Config, 'dummies'> {
     constructor(payload: BasePayload) {
         super(payload, 'dummies');
     }
+
+    // methods just for the test setup, normally they do not belong here
 
     create() {
         return this.repository.create({foo: 'foo'});
     }
 
+    // duplicate methods
+    
     duplicate(id: number) {
         return this.repository.duplicate(id);
     }
@@ -26,11 +30,11 @@ class DummyQuery extends CollectionQuery<Config, 'dummies'> {
 
 it('duplicates a document', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
-    const created = await dummyQuery.create();
+    const collectionDuplicate = new CollectionDuplicate(ctx.payload);
+    const created = await collectionDuplicate.create();
 
     // test
-    const duplicated = await dummyQuery.duplicate(created.id);
+    const duplicated = await collectionDuplicate.duplicate(created.id);
 
     // verify
     expect(created.id).toBeDefined();
@@ -44,11 +48,11 @@ it('duplicates a document', async () => {
 
 it('duplicates a document with overrides', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
-    const created = await dummyQuery.create();
+    const collectionDuplicate = new CollectionDuplicate(ctx.payload);
+    const created = await collectionDuplicate.create();
 
     // test
-    const duplicated = await dummyQuery.duplicateWithOverrides(created.id);
+    const duplicated = await collectionDuplicate.duplicateWithOverrides(created.id);
 
     // verify
     expect(created.id).toBeDefined();

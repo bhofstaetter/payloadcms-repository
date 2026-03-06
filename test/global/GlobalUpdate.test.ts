@@ -1,19 +1,23 @@
+import {getTestContext} from '@test/helpers/getTestContext';
 import type {Config} from '@test/helpers/payload.test.types';
-import {setupIntegrationTestPayloadInstanceFor} from '@test/helpers/setupIntegrationTestPayloadInstanceFor';
 import type {BasePayload} from 'payload';
 import {expect, it} from 'vitest';
-import {GlobalQuery} from '@/global/GlobalQuery';
+import {GlobalOperations} from '@/global/GlobalOperations';
 
-const ctx = setupIntegrationTestPayloadInstanceFor(['dummies']);
+const ctx = getTestContext();
 
-class DummyQuery extends GlobalQuery<Config, 'dummy'> {
+class GlobalUpdate extends GlobalOperations<Config, 'dummy'> {
     constructor(payload: BasePayload) {
         super(payload, 'dummy');
     }
 
+    // methods just for the test setup, normally they do not belong here
+
     find() {
         return this.repository.find();
     }
+
+    // update methods
 
     update(foo: string, bar: number) {
         return this.repository.update({foo, bar});
@@ -22,14 +26,14 @@ class DummyQuery extends GlobalQuery<Config, 'dummy'> {
 
 it('updates the global', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
-    const original = await dummyQuery.find();
+    const globalUpdate = new GlobalUpdate(ctx.payload);
+    const original = await globalUpdate.find();
 
     // test
-    const result = await dummyQuery.update('new-foo', 99);
+    const result = await globalUpdate.update('new-foo', 99);
 
     // verify
-    expect(original.foo).toStrictEqual('foo');
+    expect(original.foo).toStrictEqual('foo 3'); // value from GlobalOperations.count.test
     expect(original.bar).not.toBeDefined();
     expect(result.foo).toStrictEqual('new-foo');
     expect(result.bar).toStrictEqual(99);

@@ -1,22 +1,26 @@
+import {getTestContext} from '@test/helpers/getTestContext';
 import type {Config} from '@test/helpers/payload.test.types';
-import {setupIntegrationTestPayloadInstanceFor} from '@test/helpers/setupIntegrationTestPayloadInstanceFor';
 import type {BasePayload} from 'payload';
 import {expect, it} from 'vitest';
-import {GlobalQuery} from '@/global/GlobalQuery';
+import {GlobalOperations} from '@/global/GlobalOperations';
 
-const ctx = setupIntegrationTestPayloadInstanceFor(['dummies']);
+const ctx = getTestContext();
 
-class DummyQuery extends GlobalQuery<Config, 'dummy'> {
+class GlobalQuery extends GlobalOperations<Config, 'dummy'> {
     constructor(payload: BasePayload) {
         super(payload, 'dummy');
     }
 
-    find() {
-        return this.repository.find();
-    }
+    // methods just for the test setup, normally they do not belong here
 
     update(foo: string) {
         return this.repository.update({foo});
+    }
+
+    // query methods
+
+    find() {
+        return this.repository.find();
     }
 
     findVersions() {
@@ -30,9 +34,10 @@ class DummyQuery extends GlobalQuery<Config, 'dummy'> {
 
 it('finds the global', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
+    const globalQuery = new GlobalQuery(ctx.payload);
+
     // test
-    const result = await dummyQuery.find();
+    const result = await globalQuery.find();
 
     // verify
     expect(result.id).toBeDefined;
@@ -41,14 +46,14 @@ it('finds the global', async () => {
 
 it('finds a version by its id', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
+    const globalQuery = new GlobalQuery(ctx.payload);
 
-    await dummyQuery.update('foo 2');
-    await dummyQuery.update('foo 3');
+    await globalQuery.update('foo 2');
+    await globalQuery.update('foo 3');
 
     // test
-    const secondVersion = await dummyQuery.findVersions().then(page => page.docs[1]);
-    const result = await dummyQuery.findVersionById(secondVersion.id);
+    const secondVersion = await globalQuery.findVersions().then(page => page.docs[1]);
+    const result = await globalQuery.findVersionById(secondVersion.id);
 
     // verify
     expect(result.version.foo).toStrictEqual('foo 2');

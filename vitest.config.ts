@@ -18,6 +18,10 @@ export default defineConfig({
                     globalSetup: './test/helpers/setupIntegrationTest.ts',
                     testTimeout: 30000,
                     fileParallelism: false,
+                    env: {
+                        DB_TYPE: 'postgres',
+                        POSTGRES_IMAGE: 'postgres:18.2-alpine',
+                    },
                 },
             },
         ],

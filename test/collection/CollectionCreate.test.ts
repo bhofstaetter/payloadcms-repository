@@ -1,12 +1,12 @@
+import {getTestContext} from '@test/helpers/getTestContext';
 import type {Config} from '@test/helpers/payload.test.types';
-import {setupIntegrationTestPayloadInstanceFor} from '@test/helpers/setupIntegrationTestPayloadInstanceFor';
 import type {BasePayload} from 'payload';
 import {expect, it} from 'vitest';
-import {CollectionQuery} from '@/collection/CollectionQuery';
+import {CollectionOperations} from '@/collection/CollectionOperations';
 
-const ctx = setupIntegrationTestPayloadInstanceFor(['dummies']);
+const ctx = getTestContext();
 
-class DummyQuery extends CollectionQuery<Config, 'dummies'> {
+class CollectionCreate extends CollectionOperations<Config, 'dummies'> {
     constructor(payload: BasePayload) {
         super(payload, 'dummies');
     }
@@ -22,10 +22,10 @@ class DummyQuery extends CollectionQuery<Config, 'dummies'> {
 
 it('creates a published document', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
+    const collectionCreate = new CollectionCreate(ctx.payload);
 
     // test
-    const created = await dummyQuery.create();
+    const created = await collectionCreate.create();
 
     // verify
     expect(created.id).toBeDefined();
@@ -36,10 +36,10 @@ it('creates a published document', async () => {
 
 it('creates a draft document', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
+    const collectionCreate = new CollectionCreate(ctx.payload);
 
     // test
-    const created = await dummyQuery.createDraft();
+    const created = await collectionCreate.createDraft();
 
     // verify
     expect(created.id).toBeDefined();

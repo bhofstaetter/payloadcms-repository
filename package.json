@@ -1,7 +1,7 @@
 {
     "name": "@bhofstaetter/payloadcms-repository",
     "version": "0.1.1",
-    "description": "Opinionated repository and query object wrapper around Payload's local API.",
+    "description": "Opinionated repository and operations object wrapper around Payload's Local API.",
     "license": "MIT",
     "author": "Benedikt Hofstätter",
     "homepage": "https://github.com/bhofstaetter/payloadcms-repository",
@@ -33,13 +33,15 @@
         "typecheck": "tsc",
         "lint": "biome check",
         "lint:fix": "biome check --fix",
-        "prepublishOnly": "npm run lint && npm run typecheck && npm run build"
+        "test": "vitest run",
+        "prepublishOnly": "npm run lint && npm run typecheck && npm run test && npm run build"
     },
     "peerDependencies": {
         "payload": ">=3",
         "ts-essentials": ">=10"
     },
     "devDependencies": {
+        "@bhofstaetter/payloadcms-it-helper": "^1.0.0",
         "@biomejs/biome": "2.4.4",
         "@payloadcms/db-postgres": "^3.78.0",
         "@testcontainers/postgresql": "^11.11.0",

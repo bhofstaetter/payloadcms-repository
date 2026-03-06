@@ -1,21 +1,25 @@
+import {getTestContext} from '@test/helpers/getTestContext';
 import type {Config} from '@test/helpers/payload.test.types';
-import {setupIntegrationTestPayloadInstanceFor} from '@test/helpers/setupIntegrationTestPayloadInstanceFor';
 import type {BasePayload} from 'payload';
 import {expect, it} from 'vitest';
-import {CollectionQuery} from '@/collection/CollectionQuery';
+import {CollectionOperations} from '@/collection/CollectionOperations';
 
-const ctx = setupIntegrationTestPayloadInstanceFor(['dummies']);
+const ctx = getTestContext();
 
-type UpdateParams = Parameters<DummyQuery['repository']['update']>;
+type UpdateParams = Parameters<CollectionUpdate['repository']['update']>;
 
-class DummyQuery extends CollectionQuery<Config, 'dummies'> {
+class CollectionUpdate extends CollectionOperations<Config, 'dummies'> {
     constructor(payload: BasePayload) {
         super(payload, 'dummies');
     }
 
+    // methods just for the test setup, normally they do not belong here
+
     create(foo?: string) {
         return this.repository.create({foo: foo ?? 'foo'});
     }
+
+    // update methods
 
     updateById(id: number, foo: string) {
         return this.repository.updateById(id, {foo});
@@ -32,11 +36,11 @@ class DummyQuery extends CollectionQuery<Config, 'dummies'> {
 
 it('updates a document by its id', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
-    const created = await dummyQuery.create();
+    const collectionUpdate = new CollectionUpdate(ctx.payload);
+    const created = await collectionUpdate.create();
 
     // test
-    const result = await dummyQuery.updateById(created.id, 'new-foo');
+    const result = await collectionUpdate.updateById(created.id, 'new-foo');
 
     // verify
     expect(created.foo).toStrictEqual('foo');
@@ -45,14 +49,14 @@ it('updates a document by its id', async () => {
 
 it('updates multiple documents by their ids', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
+    const collectionUpdate = new CollectionUpdate(ctx.payload);
 
-    const created1 = await dummyQuery.create();
-    const created2 = await dummyQuery.create();
-    const created3 = await dummyQuery.create();
+    const created1 = await collectionUpdate.create();
+    const created2 = await collectionUpdate.create();
+    const created3 = await collectionUpdate.create();
 
     // test
-    const result = await dummyQuery.updateByIds([created1.id, created2.id, created3.id], 'new-foo');
+    const result = await collectionUpdate.updateByIds([created1.id, created2.id, created3.id], 'new-foo');
 
     // verify
     expect(created1.foo).toStrictEqual('foo');
@@ -64,15 +68,15 @@ it('updates multiple documents by their ids', async () => {
 
 it('updates documents by where query', async () => {
     // prepare
-    const dummyQuery = new DummyQuery(ctx.payload);
+    const collectionUpdate = new CollectionUpdate(ctx.payload);
 
-    const created1 = await dummyQuery.create('foo 1');
-    const created2 = await dummyQuery.create('foo 2');
-    const created3 = await dummyQuery.create('foo 3');
-    const created4 = await dummyQuery.create('foo 3');
+    const created1 = await collectionUpdate.create('foo 1');
+    const created2 = await collectionUpdate.create('foo 2');
+    const created3 = await collectionUpdate.create('foo 3');
+    const created4 = await collectionUpdate.create('foo 3');
 
     // test
-    const result = await dummyQuery.update({foo: {equals: 'foo 3'}}, {bar: 99});
+    const result = await collectionUpdate.update({foo: {equals: 'foo 3'}}, {bar: 99});
 
     // verify
     expect(created1.bar).toStrictEqual(null);
