@@ -1,4 +1,4 @@
-import {getTestContextFor} from '@bhofstaetter/payloadcms-it-helper';
+import {getTestContextFor} from '@bhofstaetter/payloadcms-integration-test-utils';
 import type {CollectionConfig, GlobalConfig} from 'payload';
 
 const DummyCollection: CollectionConfig = {
