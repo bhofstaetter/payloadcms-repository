@@ -1,6 +1,6 @@
-export {CollectionOperations} from '@/collection/CollectionOperations';
-export {CollectionRepository} from '@/collection/CollectionRepository';
-export {GlobalOperations} from '@/global/GlobalOperations';
-export {GlobalRepository} from '@/global/GlobalRepository';
+export {CollectionOperations} from '@/collection/CollectionOperations.js';
+export {CollectionRepository} from '@/collection/CollectionRepository.js';
+export {GlobalOperations} from '@/global/GlobalOperations.js';
+export {GlobalRepository} from '@/global/GlobalRepository.js';
 
 export type {AnyCollectionConfig, AnyGlobalConfig, DbId} from '@/types.js';
