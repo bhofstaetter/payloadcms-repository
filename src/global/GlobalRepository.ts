@@ -8,7 +8,7 @@ import type {
     TypeWithVersion,
 } from 'payload';
 import type {DeepPartial} from 'ts-essentials';
-import type {AnyGlobalConfig} from '@/types';
+import type {AnyGlobalConfig} from '@/types.js';
 
 export class GlobalRepository<TConfig extends AnyGlobalConfig, TSlug extends GlobalSlug> {
     protected readonly payload: BasePayload;
@@ -67,29 +67,30 @@ export class GlobalRepository<TConfig extends AnyGlobalConfig, TSlug extends Glo
     }
 }
 
-type TypedGlobalSelect<TConfig extends AnyGlobalConfig, TSlug extends GlobalSlug> = TConfig['globalsSelect'][TSlug &
-    string] &
-    SelectType;
+export type TypedGlobalSelect<
+    TConfig extends AnyGlobalConfig,
+    TSlug extends GlobalSlug,
+> = TConfig['globalsSelect'][TSlug & string] & SelectType;
 
-type GlobalSelectResult<TSlug extends GlobalSlug, TSelect extends SelectType = SelectType> = TransformGlobalWithSelect<
-    TSlug,
-    TSelect
->;
+export type GlobalSelectResult<
+    TSlug extends GlobalSlug,
+    TSelect extends SelectType = SelectType,
+> = TransformGlobalWithSelect<TSlug, TSelect>;
 
-type FindGlobalOptions<
+export type FindGlobalOptions<
     TConfig extends AnyGlobalConfig,
     TSlug extends GlobalSlug,
     TSelect extends TypedGlobalSelect<TConfig, TSlug> = TypedGlobalSelect<TConfig, TSlug>,
 > = Omit<Parameters<BasePayload['findGlobal']>[0], 'slug' | 'select'> & {select?: TSelect};
 
-type FindGlobalVersionByIdOptions = Omit<Parameters<BasePayload['findGlobalVersionByID']>[0], 'slug' | 'id'>;
-type FindGlobalVersionsOptions = Omit<Parameters<BasePayload['findGlobalVersions']>[0], 'slug'>;
+export type FindGlobalVersionByIdOptions = Omit<Parameters<BasePayload['findGlobalVersionByID']>[0], 'slug' | 'id'>;
+export type FindGlobalVersionsOptions = Omit<Parameters<BasePayload['findGlobalVersions']>[0], 'slug'>;
 
-type GlobalCountVersionsOptions = Omit<Parameters<BasePayload['countGlobalVersions']>[0], 'global'>;
-type CountVersionsResult = ReturnType<BasePayload['countGlobalVersions']>;
+export type GlobalCountVersionsOptions = Omit<Parameters<BasePayload['countGlobalVersions']>[0], 'global'>;
+export type CountVersionsResult = ReturnType<BasePayload['countGlobalVersions']>;
 
-type UpdateGlobalData<TSlug extends GlobalSlug> = DeepPartial<Omit<DataFromGlobalSlug<TSlug>, 'id'>>;
-type UpdateGlobalOptions<
+export type UpdateGlobalData<TSlug extends GlobalSlug> = DeepPartial<Omit<DataFromGlobalSlug<TSlug>, 'id'>>;
+export type UpdateGlobalOptions<
     TConfig extends AnyGlobalConfig,
     TSlug extends GlobalSlug,
     TSelect extends TypedGlobalSelect<TConfig, TSlug> = TypedGlobalSelect<TConfig, TSlug>,

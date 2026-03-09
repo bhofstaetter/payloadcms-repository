@@ -1,6 +1,6 @@
 {
     "name": "payload-repository",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Opinionated repository and operations object wrapper around Payload's Local API.",
     "license": "MIT",
     "author": "Benedikt Hofstätter",
@@ -26,6 +26,10 @@
         ".": {
             "import": "./dist/index.js",
             "types": "./dist/index.d.ts"
+        },
+        "./internal/types": {
+            "import": "./dist/internal.js",
+            "types": "./dist/internal.d.ts"
         }
     },
     "scripts": {

@@ -1,5 +1,5 @@
 import type {BasePayload, CollectionSlug} from 'payload';
-import type {AnyCollectionConfig} from '@/types';
+import type {AnyCollectionConfig} from '@/types.js';
 import {CollectionRepository} from './CollectionRepository.js';
 
 export abstract class CollectionOperations<TConfig extends AnyCollectionConfig, TSlug extends CollectionSlug> {

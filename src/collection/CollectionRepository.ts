@@ -13,7 +13,7 @@ import type {
     Where,
 } from 'payload';
 import type {DeepPartial} from 'ts-essentials';
-import type {AnyCollectionConfig} from '@/types';
+import type {AnyCollectionConfig} from '@/types.js';
 
 export class CollectionRepository<TConfig extends AnyCollectionConfig, TSlug extends CollectionSlug> {
     protected readonly payload: BasePayload;
@@ -216,29 +216,30 @@ export class CollectionRepository<TConfig extends AnyCollectionConfig, TSlug ext
     }
 }
 
-type TypedSelect<
+export type TypedSelect<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
 > = TConfig['collectionsSelect'][TSlug & string] & SelectType;
 
-type SelectResult<
+export type SelectResult<
     TSlug extends CollectionSlug,
     TSelect extends SelectType = SelectType,
 > = TransformCollectionWithSelect<TSlug, TSelect>;
 
-type PaginatedSelectResult<TSlug extends CollectionSlug, TSelect extends SelectType = SelectType> = PaginatedDocs<
-    SelectResult<TSlug, TSelect>
->;
+export type PaginatedSelectResult<
+    TSlug extends CollectionSlug,
+    TSelect extends SelectType = SelectType,
+> = PaginatedDocs<SelectResult<TSlug, TSelect>>;
 
-type DraftDataFromCollectionSlug<TSlug extends CollectionSlug> = Partial<DataFromCollectionSlug<TSlug>>;
+export type DraftDataFromCollectionSlug<TSlug extends CollectionSlug> = Partial<DataFromCollectionSlug<TSlug>>;
 
-type CreateOptions<
+export type CreateOptions<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
     TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>,
 > = Omit<Parameters<BasePayload['create']>[0], 'collection' | 'select' | 'data' | 'draft'> & {select?: TSelect};
 
-type DuplicateOptions<
+export type DuplicateOptions<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
     TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>,
@@ -247,42 +248,42 @@ type DuplicateOptions<
     data?: DeepPartial<RequiredDataFromCollectionSlug<TSlug>>;
 };
 
-type FindByIdOptions<
+export type FindByIdOptions<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
     TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>,
 > = Omit<Parameters<BasePayload['findByID']>[0], 'collection' | 'select' | 'id'> & {select?: TSelect};
 
-type FindOptions<
+export type FindOptions<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
     TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>,
 > = Omit<Parameters<BasePayload['find']>[0], 'collection' | 'select' | 'where'> & {select?: TSelect};
 
-type FindDistinctOptions = Omit<Parameters<BasePayload['findDistinct']>[0], 'collection' | 'field'>;
-type FindVersionByIdOptions = Omit<Parameters<BasePayload['findVersionByID']>[0], 'collection' | 'id'>;
-type FindVersionsOptions = Omit<Parameters<BasePayload['findVersions']>[0], 'collection'>;
+export type FindDistinctOptions = Omit<Parameters<BasePayload['findDistinct']>[0], 'collection' | 'field'>;
+export type FindVersionByIdOptions = Omit<Parameters<BasePayload['findVersionByID']>[0], 'collection' | 'id'>;
+export type FindVersionsOptions = Omit<Parameters<BasePayload['findVersions']>[0], 'collection'>;
 
-type CountOptions = Omit<Parameters<BasePayload['count']>[0], 'collection'>;
-type CollectionCountVersionsOptions = Omit<Parameters<BasePayload['countVersions']>[0], 'collection'>;
-type CountResult = ReturnType<BasePayload['count']>;
-type CountVersionsResult = ReturnType<BasePayload['countVersions']>;
+export type CountOptions = Omit<Parameters<BasePayload['count']>[0], 'collection'>;
+export type CollectionCountVersionsOptions = Omit<Parameters<BasePayload['countVersions']>[0], 'collection'>;
+export type CountResult = ReturnType<BasePayload['count']>;
+export type CountVersionsResult = ReturnType<BasePayload['countVersions']>;
 
-type UpdateData<TSlug extends CollectionSlug> = DeepPartial<RequiredDataFromCollectionSlug<TSlug>>;
+export type UpdateData<TSlug extends CollectionSlug> = DeepPartial<RequiredDataFromCollectionSlug<TSlug>>;
 
-type UpdateByIdOptions<
+export type UpdateByIdOptions<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
     TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>,
 > = Omit<Parameters<BasePayload['update']>[0], 'collection' | 'select' | 'id' | 'data'> & {select?: TSelect};
 
-type UpdateOptions<
+export type UpdateOptions<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
     TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>,
 > = Omit<Parameters<BasePayload['update']>[0], 'collection' | 'select' | 'data' | 'where' | 'id'> & {select?: TSelect};
 
-type DeleteOptions<
+export type DeleteOptions<
     TConfig extends AnyCollectionConfig,
     TSlug extends CollectionSlug,
     TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>,

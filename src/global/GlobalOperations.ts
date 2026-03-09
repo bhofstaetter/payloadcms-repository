@@ -1,5 +1,5 @@
 import type {BasePayload, GlobalSlug} from 'payload';
-import type {AnyGlobalConfig} from '@/types';
+import type {AnyGlobalConfig} from '@/types.js';
 import {GlobalRepository} from './GlobalRepository.js';
 
 export abstract class GlobalOperations<TConfig extends AnyGlobalConfig, TSlug extends GlobalSlug> {
