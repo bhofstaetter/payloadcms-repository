@@ -66,10 +66,12 @@ export class CollectionRepository<TConfig extends AnyCollectionConfig, TSlug ext
     }
 
     async find<TSelect extends TypedSelect<TConfig, TSlug> = TypedSelect<TConfig, TSlug>>(
+        where: Where,
         options?: FindOptions<TConfig, TSlug, TSelect>,
     ): Promise<PaginatedSelectResult<TSlug, TSelect>> {
         return this.payload.find({
             collection: this.collectionSlug,
+            where,
             ...options,
         });
     }

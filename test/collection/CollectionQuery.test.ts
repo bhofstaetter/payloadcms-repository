@@ -23,7 +23,7 @@ class CollectionQuery extends CollectionOperations<Config, 'dummies'> {
 
     // query methods
     findAll() {
-        return this.repository.find();
+        return this.repository.find({});
     }
 
     findById(id: number) {
