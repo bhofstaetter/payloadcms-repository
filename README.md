@@ -89,6 +89,59 @@ const settings = await settingsOperations.get();
 await settingsOperations.setSiteTitle('My Site');
 ```
 
+### Transformers
+
+Transformers are optional middleware functions that intercept and modify arguments before they reach the Payload API. They can transform `data`, `where` clauses, and `options` on a per-operation basis.
+
+Pass transformers as the third argument to `CollectionOperations` or `GlobalOperations`:
+
+```ts
+import type {BasePayload} from 'payload';
+import type {Config} from '@/payload-types';
+import {CollectionOperations, type CollectionTransformers} from 'payload-repository';
+
+const tenantTransformers = (tenantId: number): CollectionTransformers<Config, 'posts'> => ({
+    create: {
+        data: data => ({...data, tenant: tenantId}),
+    },
+    find: {
+        where: where => ({...where, tenant: {equals: tenantId}}),
+    },
+    update: {
+        data: data => ({...data, tenant: tenantId}),
+        where: where => ({...where, tenant: {equals: tenantId}}),
+    },
+    delete: {
+        where: where => ({...where, tenant: {equals: tenantId}}),
+    },
+});
+
+class PostsOperations extends CollectionOperations<Config, 'posts'> {
+    constructor(payload: BasePayload, tenantId: number) {
+        super(payload, 'posts', tenantTransformers(tenantId));
+    }
+
+    create(title: string) {
+        return this.repository.create({title});
+    }
+
+    findAll() {
+        return this.repository.find();
+    }
+}
+
+// Usage
+const tenantPosts = new PostsOperations(payload, 42);
+
+// tenant is automatically injected into the data
+await tenantPosts.create('Hello World');
+
+// tenant where clause is automatically applied
+const posts = await tenantPosts.findAll();
+```
+
+Transformers support async functions and are available for all repository operations.
+
 ## License
 
 MIT
