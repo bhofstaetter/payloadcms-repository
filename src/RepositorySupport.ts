@@ -1,14 +1,17 @@
-type TransformerValue = any;
+export type Transformer<T> = (value: T) => T | Promise<T>;
 
-export const RepositorySupport = {
-    applyTransformer: async (
-        transformer: ((data: TransformerValue) => TransformerValue | Promise<TransformerValue>) | undefined,
-        data: TransformerValue,
-    ): Promise<TransformerValue> => {
-        if (transformer) {
-            return transformer(data);
-        }
+export async function applyTransformer<T>(transformer: Transformer<T> | undefined, data: T): Promise<T>;
+export async function applyTransformer<T>(
+    transformer: Transformer<T> | undefined,
+    data: T | undefined,
+): Promise<T | undefined>;
+export async function applyTransformer<T>(
+    transformer: Transformer<T> | undefined,
+    data: T | undefined,
+): Promise<T | undefined> {
+    if (transformer) {
+        return transformer(data as T);
+    }
 
-        return data;
-    },
-};
+    return data;
+}

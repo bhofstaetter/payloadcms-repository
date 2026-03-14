@@ -35,4 +35,5 @@ export type {
     UpdateGlobalOptions,
 } from '@/global/GlobalRepository.js';
 
+export type {Transformer} from '@/RepositorySupport.js';
 export type {AnyCollectionConfig, AnyGlobalConfig} from '@/types.js';
