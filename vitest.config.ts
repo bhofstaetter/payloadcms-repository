@@ -14,7 +14,7 @@ export default defineConfig({
                 extends: true,
                 test: {
                     name: 'integration',
-                    include: ['./test/**/*.test.ts'],
+                    include: ['./test/integration/**/*.test.ts'],
                     globalSetup: './test/setupIntegrationTest.ts',
                     testTimeout: 30000,
                     fileParallelism: false,
@@ -22,6 +22,13 @@ export default defineConfig({
                         DB_TYPE: 'postgres',
                         POSTGRES_IMAGE: 'postgres:18.2-alpine',
                     },
+                },
+            },
+            {
+                extends: true,
+                test: {
+                    name: 'unit',
+                    include: ['./test/unit/**/*.test.ts'],
                 },
             },
         ],

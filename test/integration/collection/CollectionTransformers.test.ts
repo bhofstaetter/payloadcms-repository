@@ -81,19 +81,23 @@ class TransformedCollection extends CollectionOperations<Config, 'dummies'> {
 }
 
 it('transforms create data', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 42}),
         },
     });
 
+    // test
     const result = await collection.create('hello');
 
+    // verify
     expect(result.foo).toStrictEqual('hello');
     expect(result.bar).toStrictEqual(42);
 });
 
 it('transforms create options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 42}),
@@ -101,13 +105,16 @@ it('transforms create options', async () => {
         },
     });
 
+    // test
     const result = await collection.create('hello');
 
+    // verify
     expect(result.foo).toBeUndefined();
     expect(result.bar).toStrictEqual(42);
 });
 
 it('transforms find where', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         find: {
             where: () => ({foo: {equals: 'target'}}),
@@ -117,13 +124,16 @@ it('transforms find where', async () => {
     await collection.create('target');
     await collection.create('other');
 
+    // test
     const result = await collection.find({});
 
+    // verify
     expect(result.totalDocs).toStrictEqual(1);
     expect(result.docs[0].foo).toStrictEqual('target');
 });
 
 it('transforms find options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         find: {
             options: options => ({...options, limit: 1}),
@@ -134,12 +144,15 @@ it('transforms find options', async () => {
     await collection.create('b');
     await collection.create('c');
 
+    // test
     const result = await collection.find({});
 
+    // verify
     expect(result.docs).toHaveLength(1);
 });
 
 it('transforms findById options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         findById: {
             options: options => ({...options, select: {foo: true}}),
@@ -147,13 +160,17 @@ it('transforms findById options', async () => {
     });
 
     const created = await collection.create('hello');
+
+    // test
     const result = await collection.findById(created.id);
 
+    // verify
     expect(result.foo).toStrictEqual('hello');
     expect(result.bar).toBeUndefined();
 });
 
 it('transforms findByIds options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         findByIds: {
             options: options => ({...options, limit: 1}),
@@ -163,12 +180,15 @@ it('transforms findByIds options', async () => {
     const a = await collection.create('a');
     const b = await collection.create('b');
 
+    // test
     const result = await collection.findByIds([a.id, b.id]);
 
+    // verify
     expect(result.docs).toHaveLength(1);
 });
 
 it('transforms findDistinct options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         findDistinct: {
             options: options => ({...options, where: {foo: {equals: 'a'}}}),
@@ -179,13 +199,16 @@ it('transforms findDistinct options', async () => {
     await collection.create('a');
     await collection.create('b');
 
+    // test
     const result = await collection.findDistinct();
 
+    // verify
     expect(result.totalDocs).toStrictEqual(1);
     expect(result.values[0].foo).toStrictEqual('a');
 });
 
 it('transforms findVersionById options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         findVersionById: {
             options: options => ({...options, depth: 0}),
@@ -194,12 +217,16 @@ it('transforms findVersionById options', async () => {
 
     await collection.create('hello');
     const versions = await collection.findVersions();
+
+    // test
     const version = await collection.findVersionById(versions.docs[0].id);
 
+    // verify
     expect(version.version.foo).toStrictEqual('hello');
 });
 
 it('transforms findVersions options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         findVersions: {
             options: options => ({...options, limit: 1}),
@@ -209,12 +236,15 @@ it('transforms findVersions options', async () => {
     await collection.create('a');
     await collection.create('b');
 
+    // test
     const result = await collection.findVersions();
 
+    // verify
     expect(result.docs).toHaveLength(1);
 });
 
 it('transforms count options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         count: {
             options: options => ({...options, where: {foo: {equals: 'x'}}}),
@@ -225,12 +255,15 @@ it('transforms count options', async () => {
     await collection.create('y');
     await collection.create('x');
 
+    // test
     const result = await collection.count();
 
+    // verify
     expect(result.totalDocs).toStrictEqual(2);
 });
 
 it('transforms countVersions options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         countVersions: {
             options: options => ({...options, where: {version__foo: {equals: 'x'}}}),
@@ -241,12 +274,15 @@ it('transforms countVersions options', async () => {
     await collection.create('y');
     await collection.create('x');
 
+    // test
     const result = await collection.countVersions();
 
+    // verify
     expect(result.totalDocs).toStrictEqual(2);
 });
 
 it('transforms update where', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         update: {
             where: () => ({foo: {equals: 'target'}}),
@@ -256,14 +292,17 @@ it('transforms update where', async () => {
     await collection.create('target');
     await collection.create('other');
 
+    // test
     const result = await collection.update({}, {bar: 77});
 
+    // verify
     expect(result.docs).toHaveLength(1);
     expect(result.docs[0].foo).toStrictEqual('target');
     expect(result.docs[0].bar).toStrictEqual(77);
 });
 
 it('transforms update data', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         update: {
             data: data => ({...data, bar: 99}),
@@ -272,13 +311,16 @@ it('transforms update data', async () => {
 
     const created = await collection.create('hello');
 
+    // test
     const result = await collection.update({id: {equals: created.id}}, {foo: 'updated'});
 
+    // verify
     expect(result.docs[0].foo).toStrictEqual('updated');
     expect(result.docs[0].bar).toStrictEqual(99);
 });
 
 it('transforms update options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 10}),
@@ -289,13 +331,17 @@ it('transforms update options', async () => {
     });
 
     const created = await collection.create('hello');
+
+    // test
     const result = await collection.update({id: {equals: created.id}}, {foo: 'updated'});
 
+    // verify
     expect(result.docs[0].foo).toStrictEqual('updated');
     expect(result.docs[0].bar).toBeUndefined();
 });
 
 it('transforms updateById data', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         updateById: {
             data: data => ({...data, bar: 55}),
@@ -303,13 +349,17 @@ it('transforms updateById data', async () => {
     });
 
     const created = await collection.create('hello');
+
+    // test
     const result = await collection.updateById(created.id, 'updated');
 
+    // verify
     expect(result.foo).toStrictEqual('updated');
     expect(result.bar).toStrictEqual(55);
 });
 
 it('transforms updateById options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 10}),
@@ -320,13 +370,17 @@ it('transforms updateById options', async () => {
     });
 
     const created = await collection.create('hello');
+
+    // test
     const result = await collection.updateById(created.id, 'updated');
 
+    // verify
     expect(result.foo).toStrictEqual('updated');
     expect(result.bar).toBeUndefined();
 });
 
 it('transforms updateByIds data', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         updateByIds: {
             data: data => ({...data, bar: 33}),
@@ -335,12 +389,16 @@ it('transforms updateByIds data', async () => {
 
     const a = await collection.create('a');
     const b = await collection.create('b');
+
+    // test
     const result = await collection.updateByIds([a.id, b.id], 'updated');
 
+    // verify
     expect(result.docs.every(d => d.bar === 33)).toBe(true);
 });
 
 it('transforms updateByIds options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 10}),
@@ -352,13 +410,17 @@ it('transforms updateByIds options', async () => {
 
     const a = await collection.create('a');
     const b = await collection.create('b');
+
+    // test
     const result = await collection.updateByIds([a.id, b.id], 'updated');
 
+    // verify
     expect(result.docs.every(d => d.foo === 'updated')).toBe(true);
     expect(result.docs.every(d => d.bar === undefined)).toBe(true);
 });
 
 it('transforms delete where', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         delete: {
             where: () => ({foo: {equals: 'delete-me'}}),
@@ -369,13 +431,16 @@ it('transforms delete where', async () => {
     await collection.create('delete-me');
     await collection.create('delete-me');
 
+    // test
     const result = await collection.delete({});
 
+    // verify
     expect(result.docs).toHaveLength(2);
     expect(result.docs.every(d => d.foo === 'delete-me')).toBe(true);
 });
 
 it('transforms delete options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 42}),
@@ -386,14 +451,18 @@ it('transforms delete options', async () => {
     });
 
     await collection.create('hello');
+
+    // test
     const result = await collection.delete({foo: {equals: 'hello'}});
 
+    // verify
     expect(result.docs).toHaveLength(1);
     expect(result.docs[0].foo).toStrictEqual('hello');
     expect(result.docs[0].bar).toBeUndefined();
 });
 
 it('transforms deleteById options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 42}),
@@ -404,13 +473,17 @@ it('transforms deleteById options', async () => {
     });
 
     const created = await collection.create('hello');
+
+    // test
     const result = await collection.deleteById(created.id);
 
+    // verify
     expect(result.foo).toStrictEqual('hello');
     expect(result.bar).toBeUndefined();
 });
 
 it('transforms deleteByIds options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         create: {
             data: data => ({...data, bar: 42}),
@@ -422,13 +495,17 @@ it('transforms deleteByIds options', async () => {
 
     const a = await collection.create('a');
     const b = await collection.create('b');
+
+    // test
     const result = await collection.deleteByIds([a.id, b.id]);
 
+    // verify
     expect(result.docs).toHaveLength(2);
     expect(result.docs.every(d => d.bar === undefined)).toBe(true);
 });
 
 it('transforms duplicate options', async () => {
+    // prepare
     const collection = new TransformedCollection(ctx.payload, {
         duplicate: {
             options: () => ({draft: true, data: {bar: 11}}),
@@ -436,8 +513,11 @@ it('transforms duplicate options', async () => {
     });
 
     const created = await collection.create('hello');
+
+    // test
     const duplicated = await collection.duplicate(created.id);
 
+    // verify
     expect(duplicated.id).not.toStrictEqual(created.id);
     expect(duplicated._status).toStrictEqual('draft');
     expect(duplicated.bar).toStrictEqual(11);

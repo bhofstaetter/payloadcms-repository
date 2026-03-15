@@ -14,13 +14,9 @@ class UnversionedCollectionCreate extends CollectionOperations<Config, 'unversio
     create() {
         return this.repository.create({foo: 'foo'});
     }
-
-    createDraft() {
-        return this.repository.create({bar: 1}, {draft: true});
-    }
 }
 
-it('creates a published document', async () => {
+it('creates a document', async () => {
     // prepare
     const collectionCreate = new UnversionedCollectionCreate(ctx.payload);
 
